@@ -29,6 +29,7 @@ class _AdvisorSignUpState extends State<AdvisorSignUp> {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   SharedPreferences preferences;
+  //
 
   bool isLoggedIn = false;
   bool isLoading = false;
