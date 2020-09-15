@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:advisorapplication/LoginSignUp/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:string_validator/string_validator.dart' as st_validator;
+import 'package:http/http.dart' as http;
 
+import '../AdvisorHomePage.dart';
 import 'AdvisorSignUp.dart';
 
 class AdvisorLogin extends StatefulWidget {
@@ -20,6 +24,26 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
     setState(() {
       _isHidden = !_isHidden;
     });
+  }
+
+  Future userLogin() async {
+    String email = emailController.text;
+    String password = passwordController.text;
+    var url = 'http://sanjayagarwal.in/Finance App/Signin3.php';
+    final response = await http.post(
+      url,
+      body: jsonEncode(<String, String>{
+        "email": email,
+        "Password": password,
+      }),
+    );
+    var message = jsonDecode(response.body);
+    if (message == "Login Matched") {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AdvisorHomePage()));
+    } else {
+      print(message);
+    }
   }
 
   @override
@@ -131,7 +155,9 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
                       height: 10,
                     ),
                     RaisedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        userLogin();
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
