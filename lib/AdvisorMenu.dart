@@ -1,4 +1,7 @@
 import 'package:advisorapplication/AdvisorProfilePage.dart';
+import 'package:advisorapplication/Insurance/InsuranceHomePage.dart';
+import 'package:advisorapplication/Investments/InvestmentHomePage.dart';
+import 'package:advisorapplication/Learning/LearningHomePage.dart';
 import 'package:advisorapplication/SearchUser.dart';
 import 'package:flutter/material.dart';
 
@@ -44,16 +47,34 @@ class _AdvisorMenuState extends State<AdvisorMenu> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => AdvisorProfile()));
-
             },
           ),
           ListTile(
             title: Text('Investments'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => InvestmentHomePage()));
+            },
           ),
           ListTile(
             title: Text('Insurance Products'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => InsuranceHomePage()));
+            },
+          ),
+          ListTile(
+            title: Text('Learning'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => LearningHomePage()));
+            },
           ),
           ListTile(
             title: Text('Search User Details'),
