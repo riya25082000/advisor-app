@@ -21,6 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  google_fonts: any
+  local_auth: ^0.6.2+3
+  percent_indicator: ^2.1.5
   string_validator: ^0.1.4
   flutter:
     sdk: flutter
