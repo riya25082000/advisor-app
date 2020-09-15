@@ -1,7 +1,17 @@
+import 'dart:convert';
+
 import 'package:advisorapplication/LoginSignUp/AdvisorLogin.dart';
 import 'package:advisorapplication/LoginSignUp/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart' as st_validator;
+import 'package:http/http.dart' as http;
+
+import '../AdvisorHomePage.dart';
+import '../AdvisorHomePage.dart';
 
 class AdvisorSignUp extends StatefulWidget {
   @override
@@ -14,6 +24,14 @@ class _AdvisorSignUpState extends State<AdvisorSignUp> {
   static final userNameRegExp = RegExp(r'^[A-Za-z0-9_.-]+$');
   final _formKey = GlobalKey<FormState>();
   bool _isHidden = true;
+  var _isProcessing;
+
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  SharedPreferences preferences;
+
+  bool isLoggedIn = false;
+  bool isLoading = false;
 
   void _toggleVisibility() {
     setState(() {
@@ -35,6 +53,82 @@ class _AdvisorSignUpState extends State<AdvisorSignUp> {
   final _phoneController = TextEditingController();
   final _codeController = TextEditingController();
   final _emailController = TextEditingController();
+
+
+
+
+  Future userSignup() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    String phone = _phoneController.text;
+    String name = _usernameController.text;
+    var url = 'http://sanjayagarwal.in/Finance App/signup.php';
+    print("****************************************************");
+    print("$email,$password,$phone,$name");
+    print("****************************************************");
+    final response = await http.post(
+      url,
+      body: jsonEncode(<String, String>{
+        "email": email,
+        "password": password,
+        "name": name,
+        "phone": phone
+      }),
+    );
+    var message = jsonDecode(response.body);
+    if (message["message"] == "Successful Signup") {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AdvisorHomePage()));
+    } else {
+      print(message["message"]);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isProcessing = false;
+
+    isSignedIn();
+  }
+
+  void isSignedIn() async {
+    this.setState(() {
+      isLoggedIn = true;
+    });
+
+    preferences = await SharedPreferences.getInstance();
+
+    isLoggedIn = await googleSignIn.isSignedIn();
+
+    if (isLoggedIn) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AdvisorHomePage()));
+    }
+    this.setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+
+  bool confirmMobile = false;
+  void checkMobileOTP(String otp) {
+    setState(() {
+      confirmMobile = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -197,6 +291,7 @@ class _AdvisorSignUpState extends State<AdvisorSignUp> {
                   ),
                   RaisedButton(
                     onPressed: () {
+                      userSignup();
 //                         setState(() {
 //                           toggleMobile();
 //                           if (_formKey.currentState.validate()) ;
