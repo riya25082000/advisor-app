@@ -4,15 +4,46 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import 'Introduction.dart';
 import 'ModuleCode.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class LearningHomePage extends StatefulWidget {
   String currentUserID;
   LearningHomePage({@required this.currentUserID});
   @override
-  _LearningHomePageState createState() => _LearningHomePageState(currentUserID: currentUserID);
+  _LearningHomePageState createState() =>
+      _LearningHomePageState(currentUserID: currentUserID);
 }
 
 class _LearningHomePageState extends State<LearningHomePage> {
+  List learn = [];
+  void getQues() async {
+    var url = 'http://sanjayagarwal.in/Finance App/learningAdvisor.php';
+    final response = await http.post(
+      url,
+      body: jsonEncode(<String, String>{
+        "UserID": currentUserID,
+      }),
+    );
+    var message = await jsonDecode(response.body);
+    print("****************************************");
+    print(message);
+    print("****************************************");
+    setState(() {
+      learn = message;
+    });
+  }
+
+  @override
+  void initState() {
+    print("****************************************");
+    print(currentUserID);
+    print("****************************************");
+    getQues();
+    // TODO: implement initState
+    super.initState();
+  }
+
   String currentUserID;
   _LearningHomePageState({@required this.currentUserID});
   @override
@@ -49,92 +80,7 @@ class _LearningHomePageState extends State<LearningHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Let's start learning",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xff373D3F),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Container(
-                      height: height < 640 ? height * 0.3 : height * 0.25,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 1.0, // soften the shadow
-                            spreadRadius: 0, //extend the shadow
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Text(
-                              "Module 1",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xff373D3F),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Stock Market Basics",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Color(0xff373D3F),
-                                ),
-                              ),
-                            ),
-                            Text(
-                              "Level: Beginner",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xff373D3F),
-                              ),
-                            ),
-                            Text(
-                              "Chapter: 1",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color(0xff373D3F),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "Progress",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Color(0xff373D3F),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            LinearPercentIndicator(
-                              lineHeight: 10.0,
-                              percent: 0.3,
-                              backgroundColor: Color(0xffC8E6C9),
-                              progressColor: Color(0xff2BD26E),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      "Other Modules",
+                      "Modules",
                       style: TextStyle(
                         fontSize: 20,
                         color: Color(0xff373D3F),
@@ -144,62 +90,74 @@ class _LearningHomePageState extends State<LearningHomePage> {
                       height: 30,
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Container(
-                        height: height * 0.5,
-                        child: GridView.count(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: GridView.count(
+                          shrinkWrap: true,
                           crossAxisCount: 2,
-                          crossAxisSpacing: 40.0,
-                          mainAxisSpacing: 40.0,
-                          physics: NeverScrollableScrollPhysics(),
-                          children: <Widget>[
-                            GestureDetector(
+                          crossAxisSpacing: 20.0,
+                          mainAxisSpacing: 20.0,
+                          physics: ScrollPhysics(),
+                          children: List.generate(learn.length, (index) {
+                            return GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (BuildContext context) =>
-                                            Introduction("1",currentUserID: currentUserID,)));
+                                            Introduction(
+                                              "${learn[index]["moduleno"]}",
+                                              "${learn[index]["modulename"]}",
+                                              currentUserID: currentUserID,
+                                            )));
                               },
-                              child: modules(width, height, Color(0xff48F5D9),
-                                  Color(0xff17AD94), 1),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            Introduction("2",currentUserID: currentUserID,)));
-                              },
-                              child: modules(width, height, Color(0xffB370FF),
-                                  Color(0xff9E49FF), 2),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            Introduction("3",currentUserID: currentUserID,)));
-                              },
-                              child: modules(width, height, Color(0xffFFFAB40),
-                                  Color(0xffFF9340), 3),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            Introduction("4",currentUserID: currentUserID,)));
-                              },
-                              child: modules(width, height, Color(0xff6BC412),
-                                  Color(0xff5BB600), 4),
-                            ),
-                          ],
-                        ),
-                      ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color(0xff48F5D9),
+                                        Colors.white
+                                      ]),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          width: width * 0.1,
+                                          height: height * 0.05,
+                                          child: Center(
+                                              child: Text(
+                                                  learn[index]["moduleno"])),
+                                          color: Color(0xff17AD94), //
+                                        )
+                                      ],
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        Divider(
+                                          color: Colors.black,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5),
+                                          child: Text(
+                                            learn[index]["modulename"],
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
                     ),
                   ],
                 ),

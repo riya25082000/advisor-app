@@ -3,10 +3,14 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class Introduction extends StatefulWidget {
   String currentUserID;
-  String moduleno; //if you have multiple values add here
-  Introduction(this.moduleno, {Key key,@required this.currentUserID}) : super(key: key);
+  String moduleno;
+  String modulename; //if you have multiple values add here
+  Introduction(this.moduleno, this.modulename,
+      {Key key, @required this.currentUserID})
+      : super(key: key);
   @override
-  _IntroductionState createState() => _IntroductionState(currentUserID: currentUserID);
+  _IntroductionState createState() =>
+      _IntroductionState(currentUserID: currentUserID);
 }
 
 class _IntroductionState extends State<Introduction> {
@@ -34,7 +38,7 @@ class _IntroductionState extends State<Introduction> {
               style: TextStyle(color: Color(0xff373D3F)),
             ),
             Text(
-              'Stock Market Basics',
+              '${widget.modulename}',
               style: TextStyle(
                   color: Color(0xff373D3F), fontWeight: FontWeight.bold),
             ),
