@@ -64,7 +64,7 @@ class _AdvisorSignUpState extends State<AdvisorSignUp> {
     String password = _passwordController.text;
     String phone = _phoneController.text;
     String name = _usernameController.text;
-    var url = 'http://sanjayagarwal.in/Finance App/signup.php';
+    var url = 'http://sanjayagarwal.in/Finance App/signupAdvisor.php';
     print("****************************************************");
     print("$email,$password,$phone,$name");
     print("****************************************************");
