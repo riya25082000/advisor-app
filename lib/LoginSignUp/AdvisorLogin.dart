@@ -29,7 +29,7 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
   Future userLogin() async {
     String email = emailController.text;
     String password = passwordController.text;
-    var url = 'http://sanjayagarwal.in/Finance App/Signin3.php';
+    var url = 'http://sanjayagarwal.in/Finance App/signinAdvisor.php';
     final response = await http.post(
       url,
       body: jsonEncode(<String, String>{
