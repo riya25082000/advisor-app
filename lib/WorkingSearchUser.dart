@@ -8,7 +8,7 @@ class SearchUserPage extends StatefulWidget {
   @override
   _SearchUserPage createState() => _SearchUserPage();
 }
-//
+// //
 
 class _SearchUserPage extends State<SearchUserPage> {
   List searchList = [];
