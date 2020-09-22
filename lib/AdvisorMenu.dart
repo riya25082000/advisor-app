@@ -6,6 +6,8 @@ import 'package:advisorapplication/NewsLetter/NewsLetter.dart';
 import 'package:advisorapplication/SearchUser.dart';
 import 'package:flutter/material.dart';
 
+import 'Support/Support.dart';
+
 class AdvisorMenu extends StatefulWidget {
   @override
   _AdvisorMenuState createState() => _AdvisorMenuState();
@@ -93,6 +95,15 @@ class _AdvisorMenuState extends State<AdvisorMenu> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => SearchUser()));
+            },
+          ),
+          ListTile(
+            title: Text('Help & Support'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => Support()));
             },
           ),
         ],
