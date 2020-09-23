@@ -6,7 +6,8 @@ class showQuestion extends StatefulWidget {
   String currentUserID;
   String cate;
   int suid;
-  showQuestion(this.cate, this.suid, {@required this.currentUserID});
+  int x;
+  showQuestion(this.x, this.cate, this.suid, {@required this.currentUserID});
   @override
   _showQuestionState createState() =>
       _showQuestionState(currentUserID: currentUserID);
@@ -98,7 +99,7 @@ class _showQuestionState extends State<showQuestion> {
   String currentUserID;
   _showQuestionState({@required this.currentUserID});
 
-  int question = 0;
+  int question;
   void changes(int index) {
     setState(() {
       question = index;
@@ -107,6 +108,7 @@ class _showQuestionState extends State<showQuestion> {
 
   @override
   Widget build(BuildContext context) {
+    question = widget.x;
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     List questionbody = [QandA(quesuser), QandA(quesadvisor)];

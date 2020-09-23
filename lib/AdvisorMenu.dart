@@ -4,6 +4,7 @@ import 'package:advisorapplication/Investments/InvestmentHomePage.dart';
 import 'package:advisorapplication/Learning/LearningHomePage.dart';
 import 'package:advisorapplication/NewsLetter/NewsLetter.dart';
 import 'package:advisorapplication/SearchUser.dart';
+import 'package:advisorapplication/WorkingSearchUser.dart';
 import 'package:flutter/material.dart';
 
 import 'Support/Support.dart';
@@ -94,7 +95,7 @@ class _AdvisorMenuState extends State<AdvisorMenu> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => SearchUser()));
+                      builder: (BuildContext context) => SearchUserPage()));
             },
           ),
           ListTile(

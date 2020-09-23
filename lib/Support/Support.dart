@@ -75,6 +75,7 @@ class _SupportState extends State<Support> {
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => showQuestion(
+                          supp,
                           data[index]["sname"],
                           int.parse(data[index]["sid"]),
                           currentUserID: currentUserID,
