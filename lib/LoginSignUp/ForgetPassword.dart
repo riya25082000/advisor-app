@@ -206,7 +206,7 @@ class _ForgetPassPageState extends State<ForgetPassPage> {
   }
 
   Future<void> forgetPassword() async {
-    var url = 'http://sanjayagarwal.in/Finance App/forget.php';
+    var url = 'http://sanjayagarwal.in/Finance App/forgetAdvisor.php';
     print("****************************************************");
     print(email);
     print("****************************************************");
@@ -214,7 +214,7 @@ class _ForgetPassPageState extends State<ForgetPassPage> {
       url,
       body: jsonEncode(<String, String>{
         "Email": email,
-        "UserID": currentUserID,
+        "AdvisorID": currentUserID,
       }),
     );
     if (response.body.isNotEmpty) {
