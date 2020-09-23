@@ -1,5 +1,6 @@
 import 'package:advisorapplication/AdvisorHomePage.dart';
 import 'package:advisorapplication/LoginSignUp/AdvisorLogin.dart';
+import 'package:advisorapplication/WorkingSearchUser.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: AdvisorHomePage(),
+      home: SearchUserPage(),
     );
   }
 }
