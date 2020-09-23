@@ -15,7 +15,11 @@ class showQuestion extends StatefulWidget {
 
 class _showQuestionState extends State<showQuestion> {
   List quesuser = [], quesadvisor = [];
+  bool _loading;
   void getQuesUser() async {
+    setState(() {
+      _loading = true;
+    });
     print(widget.suid.toString());
     var url =
         'http://sanjayagarwal.in/Finance App/UserApp/Support/SupportQuestion.php';
@@ -31,6 +35,7 @@ class _showQuestionState extends State<showQuestion> {
     print("****************************************");
     setState(() {
       quesuser = message;
+      _loading = false;
     });
   }
 
@@ -65,35 +70,42 @@ class _showQuestionState extends State<showQuestion> {
   }
 
   Widget QandA(List data) {
-    return ListView.builder(
-      physics: ScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: data.length,
-      itemBuilder: (BuildContext cntx, int index) {
-        return Padding(
-          padding: const EdgeInsets.all(15),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: Colors.purple,
-                width: 2.0,
-              ),
+    return _loading
+        ? Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+              backgroundColor: Color(0xff63E2E0),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(data[index]["question"]),
-                  Text(data[index]["answer"])
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+          )
+        : ListView.builder(
+            physics: ScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: data.length,
+            itemBuilder: (BuildContext cntx, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Colors.purple,
+                      width: 2.0,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(data[index]["question"]),
+                        Text(data[index]["answer"])
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 
   String currentUserID;
