@@ -40,7 +40,7 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
     var message = jsonDecode(response.body);
     if (message == "Login Matched") {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AdvisorHomePage()));
+          context, MaterialPageRoute(builder: (context) => AdvisorHomePage(currentAdvisorID: '1234',)));
     } else {
       print(message);
     }

@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import 'AdvisorMenu.dart';
 
 class AdvisorHomePage extends StatefulWidget {
+  String currentAdvisorID;
+  AdvisorHomePage({@required this.currentAdvisorID});
   @override
-  _AdvisorHomePageState createState() => _AdvisorHomePageState();
+  _AdvisorHomePageState createState() =>
+      _AdvisorHomePageState(currentAdvisorID: currentAdvisorID);
 }
 
 class _AdvisorHomePageState extends State<AdvisorHomePage> {
+  String currentAdvisorID;
+  _AdvisorHomePageState({@required this.currentAdvisorID});
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -28,7 +33,9 @@ class _AdvisorHomePageState extends State<AdvisorHomePage> {
           ),
         ),
         drawer: Drawer(
-          child: AdvisorMenu(),
+          child: AdvisorMenu(
+            currentAdvisorID: currentAdvisorID,
+          ),
         ),
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {

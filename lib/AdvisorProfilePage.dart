@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:string_validator/string_validator.dart' as st_validator;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class AdvisorProfile extends StatefulWidget {
   @override
@@ -11,22 +13,57 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
   final _Namecontroller = TextEditingController();
   final _Mobcontroller = TextEditingController();
   final _Emailcontroller = TextEditingController();
-  final _Ratingcontroller = TextEditingController();
 
   String advisorMobile;
-  String advisorID;
+  String advisorID = '1234';
   bool isEditing = false;
   String advisorName;
   String advisorEmail;
   String advisorAverageRating;
 
-  void getUserData() {
-    //function to get user data
-    advisorMobile = '9564832178';
-    advisorID = '023SDE';
-    advisorName = 'Suraj';
-    advisorEmail = 'abc@gmail.com';
-    advisorAverageRating = '4.3';
+  String name = '', mobile = '', email = '';
+
+  void getUserData() async {
+    var url =
+        'http://sanjayagarwal.in/Finance App/AdvisorApp/ProfilePage/AdvisorDetails.php';
+    final response = await http.post(
+      url,
+      body: jsonEncode(<String, String>{
+        'AdvisorID': advisorID,
+      }),
+    );
+    var message = await jsonDecode(response.body);
+    print("****************************************");
+    print(message);
+    print("****************************************");
+    setState(() {
+      name = message[0]['Name'];
+      mobile = message[0]['Mobile'];
+      email = message[0]['Email'];
+    });
+    print(name);
+    print(mobile);
+    print(email);
+  }
+
+  void profileUpdate() async {
+    var url =
+        'http://sanjayagarwal.in/Finance App/AdvisorApp/ProfilePage/AdvisorUpdate.php';
+    final response1 = await http.post(
+      url,
+      body: jsonEncode(<String, String>{
+        'AdvisorID': advisorID,
+        'Name': name,
+        'Mobile': mobile,
+        'Email': email,
+      }),
+    );
+    var message1 = await jsonDecode(response1.body);
+    if (message1["message"] == "Successful Updation") {
+      print("Successfully Updated");
+    } else {
+      print(message1["message"]);
+    }
   }
 
   void switchState() {
@@ -50,9 +87,6 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
     if (_Emailcontroller.text.isNotEmpty) {
       advisorEmail = _Emailcontroller.text;
     }
-    if (_Ratingcontroller.text.isNotEmpty) {
-      advisorAverageRating = _Ratingcontroller.text;
-    }
 
     //function to update the data of user to sync database
   }
@@ -71,7 +105,6 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
     _Namecontroller.dispose();
     _Mobcontroller.dispose();
     _Emailcontroller.dispose();
-    _Ratingcontroller.dispose();
     super.dispose();
   }
 
@@ -102,10 +135,10 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
           if (isEditing) {
             updateUserData();
           }
-
           setState(() {
             switchState();
           });
+          profileUpdate();
           // Add your onPressed code here!
         },
         child: isEditing ? Icon(Icons.save) : Icon(Icons.edit),
@@ -122,35 +155,6 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Advisor ID',
-                    style: TextStyle(
-                      fontSize: tileHeight / 40,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  SizedBox(
-                    height: tileHeight / 80,
-                  ),
-                  isEditing
-                      ? TextFormField(
-                          controller: _IDcontroller,
-                        )
-                      : Text(
-                          '$advisorID',
-                          style: TextStyle(
-                            fontSize: tileHeight / 55,
-                            color: Colors.black45,
-                          ),
-                        ),
-                  isEditing
-                      ? SizedBox()
-                      : Divider(
-                          color: Colors.black45,
-                        ),
-                  SizedBox(
-                    height: tileHeight / 40,
-                  ),
-                  Text(
                     'Name',
                     style: TextStyle(
                       fontSize: tileHeight / 40,
@@ -162,10 +166,13 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
                   ),
                   isEditing
                       ? TextFormField(
-                          controller: _Namecontroller,
+                          initialValue: name,
+                          onChanged: (value) {
+                            name = value;
+                          },
                         )
                       : Text(
-                          '$advisorName',
+                          '$name',
                           style: TextStyle(
                             fontSize: tileHeight / 55,
                             color: Colors.black45,
@@ -191,10 +198,13 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
                   ),
                   isEditing
                       ? TextFormField(
-                          controller: _Mobcontroller,
+                          initialValue: mobile,
+                          onChanged: (value) {
+                            mobile = value;
+                          },
                         )
                       : Text(
-                          '$advisorMobile',
+                          '$mobile',
                           style: TextStyle(
                             fontSize: tileHeight / 55,
                             color: Colors.black45,
@@ -220,10 +230,13 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
                   ),
                   isEditing
                       ? TextFormField(
-                          controller: _Emailcontroller,
+                          initialValue: email,
+                          onChanged: (value) {
+                            email = value;
+                          },
                         )
                       : Text(
-                          '$advisorEmail',
+                          '$email',
                           style: TextStyle(
                             fontSize: tileHeight / 55,
                             color: Colors.black45,
@@ -237,32 +250,9 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
                   SizedBox(
                     height: tileHeight / 40,
                   ),
-                  Text(
-                    'Average Rating',
-                    style: TextStyle(
-                      fontSize: tileHeight / 40,
-                      color: Colors.black87,
-                    ),
-                  ),
                   SizedBox(
                     height: tileHeight / 80,
                   ),
-                  isEditing
-                      ? TextFormField(
-                          controller: _Ratingcontroller,
-                        )
-                      : Text(
-                          '$advisorAverageRating',
-                          style: TextStyle(
-                            fontSize: tileHeight / 55,
-                            color: Colors.black45,
-                          ),
-                        ),
-                  isEditing
-                      ? SizedBox()
-                      : Divider(
-                          color: Colors.black45,
-                        ),
                   SizedBox(
                     height: tileHeight / 40,
                   ),

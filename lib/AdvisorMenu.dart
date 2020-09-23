@@ -10,11 +10,16 @@ import 'package:flutter/material.dart';
 import 'Support/Support.dart';
 
 class AdvisorMenu extends StatefulWidget {
+  String currentAdvisorID;
+  AdvisorMenu({@required this.currentAdvisorID});
   @override
-  _AdvisorMenuState createState() => _AdvisorMenuState();
+  _AdvisorMenuState createState() =>
+      _AdvisorMenuState(currentAdvisorID: currentAdvisorID);
 }
 
 class _AdvisorMenuState extends State<AdvisorMenu> {
+  String currentAdvisorID;
+  _AdvisorMenuState({@required this.currentAdvisorID});
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,7 +40,7 @@ class _AdvisorMenuState extends State<AdvisorMenu> {
                   ),
                 ),
                 Text(
-                  '023SDE',
+                  "023SDE",
                   style: TextStyle(
                     color: Color(0xff373D3F),
                     fontSize: 20,
