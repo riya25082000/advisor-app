@@ -15,8 +15,11 @@ class _SupportState extends State<Support> {
   _SupportState({@required this.currentUserID});
 
   List advisorcategory = [], usercategory = [];
-
+  bool _loading;
   void getCategoryUser() async {
+    setState(() {
+      _loading = true;
+    });
     var url2 =
         'http://sanjayagarwal.in/Finance App/UserApp/Support/SupportCategory.php';
     final response2 = await http.post(
@@ -31,6 +34,7 @@ class _SupportState extends State<Support> {
     print("****************************************");
     setState(() {
       usercategory = message2;
+      _loading = false;
     });
   }
 
@@ -64,50 +68,58 @@ class _SupportState extends State<Support> {
   }
 
   Widget supportbuilder(List data) {
-    return ListView.builder(
-      physics: ScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: data.length,
-      itemBuilder: (BuildContext cntx, int index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => showQuestion(
-                          data[index]["sname"],
-                          int.parse(data[index]["sid"]),
-                          currentUserID: currentUserID,
-                        )));
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: Colors.purple,
-                  width: 2.0,
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(data[index]["sname"]),
-                    Icon(
-                      Icons.print,
-                      size: 50,
-                    ),
-                  ],
-                ),
-              ),
+    return _loading
+        ? Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+              backgroundColor: Color(0xff63E2E0),
             ),
-          ),
-        );
-      },
-    );
+          )
+        : ListView.builder(
+            physics: ScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: data.length,
+            itemBuilder: (BuildContext cntx, int index) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => showQuestion(
+                                supp,
+                                data[index]["sname"],
+                                int.parse(data[index]["sid"]),
+                                currentUserID: currentUserID,
+                              )));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.purple,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(data[index]["sname"]),
+                          Icon(
+                            Icons.print,
+                            size: 50,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 
   TextEditingController searchques = TextEditingController();
