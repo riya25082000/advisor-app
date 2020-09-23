@@ -6,7 +6,7 @@ import 'package:string_validator/string_validator.dart' as st_validator;
 import 'package:http/http.dart' as http;
 
 import '../AdvisorHomePage.dart';
-import 'AdvisorSignUp.dart';
+
 
 class AdvisorLogin extends StatefulWidget {
   @override
@@ -174,32 +174,7 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'New Advisor? ',
-                          style: TextStyle(
-                              color: Color(0xff373D3F), fontSize: width * 0.04),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        AdvisorSignUp()));
-                          },
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff63E2E0),
-                                fontSize: width * 0.04),
-                          ),
-                        ),
-                      ],
-                    ),
+
                     SizedBox(
                       height: 40,
                     ),
