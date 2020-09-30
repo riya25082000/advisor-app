@@ -57,7 +57,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         centerTitle: true,
         backgroundColor: Color(0xff63E2E0),
         title: Text(
-          'Create Advisor Page',
+          'Change My Password',
           style: TextStyle(
             color: Color(0xff373D3F),
           ),
