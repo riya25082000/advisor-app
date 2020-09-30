@@ -99,9 +99,9 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
   final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
+    getUserData();
     // TODO: implement initState
     super.initState();
-    getUserData();
   }
 
   @override
