@@ -2,12 +2,15 @@ import 'package:advisorapplication/AdvisorProfilePage.dart';
 import 'package:advisorapplication/Insurance/InsuranceHomePage.dart';
 import 'package:advisorapplication/Investments/InvestmentHomePage.dart';
 import 'package:advisorapplication/Learning/LearningHomePage.dart';
+import 'package:advisorapplication/LoginSignUp/AdvisorLogin.dart';
 import 'package:advisorapplication/NewsLetter/NewsLetter.dart';
 import 'package:advisorapplication/SearchUser.dart';
 import 'package:advisorapplication/WorkingSearchUser.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Support/Support.dart';
+import 'changePassword.dart';
 
 class AdvisorMenu extends StatefulWidget {
   String currentAdvisorID;
@@ -110,6 +113,35 @@ class _AdvisorMenuState extends State<AdvisorMenu> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => Support()));
+            },
+          ),
+          ListTile(
+            title: Text('Change Password'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => ChangePassword(
+                            currentAdvisorID: currentAdvisorID,
+                          )));
+            },
+          ),
+          ListTile(
+            title: Text('Sign Out'),
+            onTap: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.remove('email');
+              Navigator.of(context).pushAndRemoveUntil(
+                // the new route
+                MaterialPageRoute(
+                  builder: (BuildContext context) => AdvisorLogin(),
+                ),
+
+                // this function should return true when we're done removing routes
+                // but because we want to remove all other screens, we make it
+                // always return false
+                (Route route) => false,
+              );
             },
           ),
         ],

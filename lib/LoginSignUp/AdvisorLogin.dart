@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:advisorapplication/LoginSignUp/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart' as st_validator;
 import 'package:http/http.dart' as http;
 
@@ -32,20 +33,41 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
     final response = await http.post(
       url,
       body: jsonEncode(<String, String>{
-        "email": email,
+        "Email": email,
         "Password": password,
       }),
     );
     var message = jsonDecode(response.body);
-    if (message != null) {
+    print("************************************");
+    print(message);
+    if (message == "Invalid Username or Password Please Try Again") {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Login Error"),
+            content: Text("The Email or Password is Invalid."),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AdvisorLogin()));
+                },
+                child: Text("Ok"),
+              )
+            ],
+          );
+        },
+      );
+    } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', email);
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => AdvisorHomePage(
                     currentAdvisorID: message,
                   )));
-    } else {
-      print(message);
     }
   }
 
