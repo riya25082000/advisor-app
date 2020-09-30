@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 
 import '../AdvisorHomePage.dart';
 
-
 class AdvisorLogin extends StatefulWidget {
   @override
   _AdvisorLoginState createState() => _AdvisorLoginState();
@@ -29,7 +28,7 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
   Future userLogin() async {
     String email = emailController.text;
     String password = passwordController.text;
-    var url = 'http://sanjayagarwal.in/Finance App/signinAdvisor.php';
+    var url = 'http://sanjayagarwal.in/Finance App/AdvisorApp/AdvisorLogin.php';
     final response = await http.post(
       url,
       body: jsonEncode(<String, String>{
@@ -38,9 +37,13 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
       }),
     );
     var message = jsonDecode(response.body);
-    if (message == "Login Matched") {
+    if (message != null) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AdvisorHomePage(currentAdvisorID: '1234',)));
+          context,
+          MaterialPageRoute(
+              builder: (context) => AdvisorHomePage(
+                    currentAdvisorID: message,
+                  )));
     } else {
       print(message);
     }
@@ -174,7 +177,6 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
                     SizedBox(
                       height: 20,
                     ),
-
                     SizedBox(
                       height: 40,
                     ),

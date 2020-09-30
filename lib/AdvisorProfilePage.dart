@@ -4,11 +4,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class AdvisorProfile extends StatefulWidget {
+  String currentAdvisorID;
+  AdvisorProfile({@required this.currentAdvisorID});
   @override
-  _AdvisorProfileState createState() => _AdvisorProfileState();
+  _AdvisorProfileState createState() =>
+      _AdvisorProfileState(currentAdvisorID: currentAdvisorID);
 }
 
 class _AdvisorProfileState extends State<AdvisorProfile> {
+  String currentAdvisorID;
+  _AdvisorProfileState({@required this.currentAdvisorID});
   final _IDcontroller = TextEditingController();
   final _Namecontroller = TextEditingController();
   final _Mobcontroller = TextEditingController();
@@ -29,7 +34,7 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
     final response = await http.post(
       url,
       body: jsonEncode(<String, String>{
-        'AdvisorID': advisorID,
+        'AdvisorID': currentAdvisorID,
       }),
     );
     var message = await jsonDecode(response.body);
@@ -52,14 +57,14 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
     final response1 = await http.post(
       url,
       body: jsonEncode(<String, String>{
-        'AdvisorID': advisorID,
+        'AdvisorID': currentAdvisorID,
         'Name': name,
         'Mobile': mobile,
         'Email': email,
       }),
     );
     var message1 = await jsonDecode(response1.body);
-    if (message1["message"] == "Successful Updation") {
+    if (message1 == "Successful Updation") {
       print("Successfully Updated");
     } else {
       print(message1["message"]);
