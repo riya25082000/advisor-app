@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:advisorapplication/LoginSignUp/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart' as st_validator;
 import 'package:http/http.dart' as http;
 
 import '../AdvisorHomePage.dart';
-import 'AdvisorSignUp.dart';
 
 class AdvisorLogin extends StatefulWidget {
   @override
@@ -29,20 +29,45 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
   Future userLogin() async {
     String email = emailController.text;
     String password = passwordController.text;
-    var url = 'http://sanjayagarwal.in/Finance App/signinAdvisor.php';
+    var url = 'http://sanjayagarwal.in/Finance App/AdvisorApp/AdvisorLogin.php';
     final response = await http.post(
       url,
       body: jsonEncode(<String, String>{
-        "email": email,
+        "Email": email,
         "Password": password,
       }),
     );
     var message = jsonDecode(response.body);
-    if (message == "Login Matched") {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AdvisorHomePage()));
+    print("************************************");
+    print(message);
+    if (message == "Invalid Username or Password Please Try Again") {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Login Error"),
+            content: Text("The Email or Password is Invalid."),
+            actions: [
+              FlatButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AdvisorLogin()));
+                },
+                child: Text("Ok"),
+              )
+            ],
+          );
+        },
+      );
     } else {
-      print(message);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('email', email);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AdvisorHomePage(
+                    currentAdvisorID: message,
+                  )));
     }
   }
 
@@ -173,32 +198,6 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
                     ),
                     SizedBox(
                       height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'New Advisor? ',
-                          style: TextStyle(
-                              color: Color(0xff373D3F), fontSize: width * 0.04),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        AdvisorSignUp()));
-                          },
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xff63E2E0),
-                                fontSize: width * 0.04),
-                          ),
-                        ),
-                      ],
                     ),
                     SizedBox(
                       height: 40,
