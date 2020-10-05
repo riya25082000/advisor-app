@@ -11,6 +11,7 @@ class InvestmentHomePage extends StatefulWidget {
 
 class _InvestmentHomePageState extends State<InvestmentHomePage> {
   String currentUserID;
+  bool _loading;
   _InvestmentHomePageState({@required this.currentUserID});
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,15 @@ class _InvestmentHomePageState extends State<InvestmentHomePage> {
           style: TextStyle(color: Color(0xff373D3F)),
         ),
       ),
-      body: LayoutBuilder(
+      body: _loading
+          ? Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+          backgroundColor: Color(0xff63E2E0),
+        ),
+      )
+          :
+      LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
           return SingleChildScrollView(
             child: ConstrainedBox(

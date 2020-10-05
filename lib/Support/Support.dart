@@ -20,28 +20,35 @@ class _SupportState extends State<Support> {
   List searchList = [];
   List ques = [], supcategory = [];
   Future userSearchData() async {
-    var url = 'http://sanjayagarwal.in/Finance App/UserApp/Support/userCategoryData.php';
-    final response = await http.post(url);
-    if (response.statusCode == 200) {
-      var jsonData = jsonDecode(response.body);
+    if(supp==0) {
+      var url = 'http://sanjayagarwal.in/Finance App/UserApp/Support/userCategoryData.php';
+      final response = await http.post(url);
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(response.body);
 
-      for (var i = 0; i < jsonData.length; i++) {
-        searchList.add(jsonData[i]['sname']);
-        // searchList.add(jsonData[i]['sid']);
+        for (var i = 0; i < jsonData.length; i++) {
+          searchList.add(jsonData[i]['sname']);
+          // searchList.add(jsonData[i]['sid']);
+        }
       }
 
       // print(searchList);
+
+      var message2 = await jsonDecode(response.body);
+      print("****************************************");
+      print(message2);
+      print("****************************************");
+
+      setState(() {
+        supcategory = message2;
+        //print(supcategory[0]["sid"]);
+
+      });
     }
-    var message2 = await jsonDecode(response.body);
-    print("****************************************");
-    print(message2 );
-    print("****************************************");
-    setState(() {
-
-      supcategory = message2;
-      //print(supcategory[0]["sid"]);
-
-    });
+    if(supp==1)
+      {
+        
+      }
   }
 
   bool _loading;
@@ -157,6 +164,7 @@ class _SupportState extends State<Support> {
   void changes(int index) {
     setState(() {
       supp = index;
+      print(supp);
     });
   }
 
@@ -183,6 +191,7 @@ class _SupportState extends State<Support> {
           BottomNavigationBarItem(
             icon: Icon(Icons.perm_contact_calendar),
             title: Text("Advisor"),
+
           ),
         ],
       ),

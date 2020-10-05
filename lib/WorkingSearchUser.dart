@@ -1,7 +1,18 @@
 import 'dart:convert';
+
+import 'package:advisorapplication/UserInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
+import 'UserInfo.dart';
+
+import 'UserInfo.dart';
+import 'UserInfo.dart';
+import 'UserInfo.dart';
+import 'UserInfo.dart';
+import 'UserInfo.dart';
+
 
 class SearchUserPage extends StatefulWidget {
   @override
@@ -122,6 +133,21 @@ class UserSearch extends SearchDelegate<String> {
               itemBuilder: (context, index) {
                 var list = snapshot.data[index];
 
+
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+
+                  // add your code here.//////////////
+                  print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                  print(index);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => UserInformation(
+                            currentUserID: "987654321",
+                          )));
+                });
+
+
                 return ListTile(
                   title: Text(list['UserID']),
                 );
@@ -139,6 +165,7 @@ class UserSearch extends SearchDelegate<String> {
         : list.where((element) => element.contains(query)).toList();
     return listData.isEmpty
         ? Center(
+
             child: Text(
             'NO USER FOUND',
             style: TextStyle(fontSize: 20),
@@ -154,5 +181,6 @@ class UserSearch extends SearchDelegate<String> {
                 title: Text(listData[index]),
               );
             });
+
   }
 }

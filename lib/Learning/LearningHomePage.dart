@@ -6,6 +6,9 @@ import 'Introduction.dart';
 import 'ModuleCode.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../erroralert.dart';
+import 'dart:async';
+import 'dart:io';
 
 class LearningHomePage extends StatefulWidget {
   String currentUserID;
@@ -19,6 +22,7 @@ class _LearningHomePageState extends State<LearningHomePage> {
   List learn = [];
   bool _loading;
   void getQues() async {
+
     setState(() {
       _loading = true;
     });
@@ -37,6 +41,30 @@ class _LearningHomePageState extends State<LearningHomePage> {
       learn = message;
       _loading = false;
     });
+    var url = 'http://sanjayagarwal.in/Finance App/learningAdvisor.php';
+    try {
+      final response = await http.post(
+        url,
+        body: jsonEncode(<String, String>{
+          "UserID": currentUserID,
+        }),
+      );
+      var message = await jsonDecode(response.body);
+      print("****************************************");
+      print(message);
+      print("****************************************");
+      setState(() {
+        learn = message;
+      });
+    }
+    on TimeoutException catch (e) {
+      alerttimeout(context, currentUserID);
+    } on Error catch (e) {
+      alerterror(context, currentUserID);
+    } on SocketException catch (e) {
+      alertinternet(context, currentUserID);
+    }
+
   }
 
   @override
@@ -71,13 +99,24 @@ class _LearningHomePageState extends State<LearningHomePage> {
           style: TextStyle(color: Color(0xff373D3F)),
         ),
       ),
-      body: _loading
+
+      body:
+      _loading
           ? Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                backgroundColor: Color(0xff63E2E0),
-              ),
-            )
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+          backgroundColor: Color(0xff63E2E0),
+        ),
+      )
+          :
+      LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            physics: ScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight,
+
           : LayoutBuilder(
               builder:
                   (BuildContext context, BoxConstraints viewportConstraints) {
