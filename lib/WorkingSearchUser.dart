@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:advisorapplication/UserInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'UserInfo.dart';
 import 'UserInfo.dart';
 import 'UserInfo.dart';
 import 'UserInfo.dart';
+
 
 class SearchUserPage extends StatefulWidget {
   @override
@@ -131,6 +133,7 @@ class UserSearch extends SearchDelegate<String> {
               itemBuilder: (context, index) {
                 var list = snapshot.data[index];
 
+
                 SchedulerBinding.instance.addPostFrameCallback((_) {
 
                   // add your code here.//////////////
@@ -143,6 +146,7 @@ class UserSearch extends SearchDelegate<String> {
                             currentUserID: "987654321",
                           )));
                 });
+
 
                 return ListTile(
                   title: Text(list['UserID']),
@@ -161,20 +165,22 @@ class UserSearch extends SearchDelegate<String> {
         : list.where((element) => element.contains(query)).toList();
     return listData.isEmpty
         ? Center(
-        child: Text(
-          'NO USER FOUND',
-          style: TextStyle(fontSize: 20),
-        ))
+
+            child: Text(
+            'NO USER FOUND',
+            style: TextStyle(fontSize: 20),
+          ))
         : ListView.builder(
-        itemCount: listData.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {
-              query = listData[index];
-              showResults(context);
-            },
-            title: Text(listData[index]),
-          );
-        });
+            itemCount: listData.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () {
+                  query = listData[index];
+                  showResults(context);
+                },
+                title: Text(listData[index]),
+              );
+            });
+
   }
 }

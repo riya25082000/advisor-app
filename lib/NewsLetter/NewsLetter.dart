@@ -21,10 +21,28 @@ class _NewsLetterState extends State<NewsLetter> {
   List letteruse = [];
   bool _loading;
 
+
   String get currentUserID => null;
+  void getLetterUser() async {
+   
   void getLetterUser() async {
     setState(() {
       _loading = true;
+    });
+    var url =
+        'http://sanjayagarwal.in/Finance App/UserApp/NewsLetter/NewsLetterDetails.php';
+    final response = await http.post(
+      url,
+      body: jsonEncode(<String, String>{}),
+    );
+    var message = await jsonDecode(response.body);
+    print("****************************************");
+    print(message);
+    print("****************************************");
+    setState(() {
+      letteruse = message;
+      _loading = false;
+
     });
     try {
       var url =
@@ -85,51 +103,58 @@ class _NewsLetterState extends State<NewsLetter> {
   }
 
   Widget letterbody(List data) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GridView.count(
-        shrinkWrap: true,
-        crossAxisCount: 2,
-        crossAxisSpacing: 20.0,
-        mainAxisSpacing: 20.0,
-        physics: ScrollPhysics(),
-        children: List.generate(data.length, (index) {
-          return GestureDetector(
-            onTap: () {
-              print(data[index]['nurl']);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => ShowLetter(
-                            int.parse(data[index]['nid']),
+    return _loading
+        ? Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+              backgroundColor: Color(0xff63E2E0),
+            ),
+          )
+        : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              crossAxisSpacing: 20.0,
+              mainAxisSpacing: 20.0,
+              physics: ScrollPhysics(),
+              children: List.generate(data.length, (index) {
+                return GestureDetector(
+                  onTap: () {
+                    print(data[index]['nurl']);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => ShowLetter(
+                                  int.parse(data[index]['nid']),
+                                  data[index]['ntitle'],
+                                  data[index]['nurl'],
+                                )));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Color(0xff48F5D9), Colors.white]),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Text(
                             data[index]['ntitle'],
-                            data[index]['nurl'],
-                          )));
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color(0xff48F5D9), Colors.white]),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text(
-                      data[index]['ntitle'],
-                      textAlign: TextAlign.center,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                );
+              }),
             ),
           );
-        }),
-      ),
-    );
   }
 
   @override

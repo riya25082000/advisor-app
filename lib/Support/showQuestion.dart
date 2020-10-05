@@ -7,7 +7,8 @@ class showQuestion extends StatefulWidget {
   String currentUserID;
   String cate;
   int suid;
-  showQuestion(this.cate, this.suid, {@required this.currentUserID});
+  int x;
+  showQuestion(this.x, this.cate, this.suid, {@required this.currentUserID});
   @override
   _showQuestionState createState() =>
       _showQuestionState(currentUserID: currentUserID);
@@ -15,7 +16,11 @@ class showQuestion extends StatefulWidget {
 
 class _showQuestionState extends State<showQuestion> {
   List quesuser = [], quesadvisor = [];
+  bool _loading;
   void getQuesUser() async {
+    setState(() {
+      _loading = true;
+    });
     print(widget.suid.toString());
     var url =
         'http://sanjayagarwal.in/Finance App/UserApp/Support/SupportQuestion.php';
@@ -31,6 +36,7 @@ class _showQuestionState extends State<showQuestion> {
     print("****************************************");
     setState(() {
       quesuser = message;
+      _loading = false;
     });
   }
 
@@ -65,41 +71,48 @@ class _showQuestionState extends State<showQuestion> {
   }
 
   Widget QandA(List data) {
-    return ListView.builder(
-      physics: ScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: data.length,
-      itemBuilder: (BuildContext cntx, int index) {
-        return Padding(
-          padding: const EdgeInsets.all(15),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: Colors.purple,
-                width: 2.0,
-              ),
+    return _loading
+        ? Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+              backgroundColor: Color(0xff63E2E0),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(data[index]["question"]),
-                  Text(data[index]["answer"])
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+          )
+        : ListView.builder(
+            physics: ScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: data.length,
+            itemBuilder: (BuildContext cntx, int index) {
+              return Padding(
+                padding: const EdgeInsets.all(15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      color: Colors.purple,
+                      width: 2.0,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(data[index]["question"]),
+                        Text(data[index]["answer"])
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
   }
 
   String currentUserID;
   _showQuestionState({@required this.currentUserID});
 
-  int question = 0;
+  int question;
   void changes(int index) {
     setState(() {
       question = index;
@@ -108,6 +121,7 @@ class _showQuestionState extends State<showQuestion> {
 
   @override
   Widget build(BuildContext context) {
+    question = widget.x;
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     List questionbody = [QandA(quesuser), QandA(quesadvisor)];
