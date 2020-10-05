@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'ShowLetter.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../erroralert.dart';
+import 'dart:async';
+import 'dart:io';
 
 class NewsLetter extends StatefulWidget {
   @override
@@ -16,20 +19,35 @@ class _NewsLetterState extends State<NewsLetter> {
   TextEditingController existurl = TextEditingController();
 
   List letteruse = [];
+  bool _loading;
+
+  String get currentUserID => null;
   void getLetterUser() async {
-    var url =
-        'http://sanjayagarwal.in/Finance App/UserApp/NewsLetter/NewsLetterDetails.php';
-    final response = await http.post(
-      url,
-      body: jsonEncode(<String, String>{}),
-    );
-    var message = await jsonDecode(response.body);
-    print("****************************************");
-    print(message);
-    print("****************************************");
     setState(() {
-      letteruse = message;
+      _loading = true;
     });
+    try {
+      var url =
+          'http://sanjayagarwal.in/Finance App/UserApp/NewsLetter/NewsLetterDetails.php';
+      final response = await http.post(
+        url,
+        body: jsonEncode(<String, String>{}),
+      );
+      var message = await jsonDecode(response.body);
+      print("****************************************");
+      print(message);
+      print("****************************************");
+      setState(() {
+        letteruse = message;
+      });
+    }
+    on TimeoutException catch (e) {
+      alerttimeout(context, currentUserID);
+    } on Error catch (e) {
+      alerterror(context, currentUserID);
+    } on SocketException catch (e) {
+      alertinternet(context, currentUserID);
+    }
   }
 
   List letteradvi = [];
@@ -152,7 +170,16 @@ class _NewsLetterState extends State<NewsLetter> {
           ),
         ],
       ),
-      body: LayoutBuilder(
+      body:
+      _loading
+          ? Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+          backgroundColor: Color(0xff63E2E0),
+        ),
+      )
+          :
+      LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
           return SingleChildScrollView(
             physics: ScrollPhysics(),

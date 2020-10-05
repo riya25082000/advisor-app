@@ -1,3 +1,4 @@
+import 'package:advisorapplication/Support/Support.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -149,7 +150,11 @@ class _showQuestionState extends State<showQuestion> {
                       padding: const EdgeInsets.only(top: 10.0),
                       child: IconButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                         // Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => Support()));
                         },
                         icon: Icon(Icons.arrow_back_ios),
                         color: Colors.white,

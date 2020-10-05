@@ -7,6 +7,7 @@ import 'package:advisorapplication/SearchUser.dart';
 import 'package:flutter/material.dart';
 
 import 'Support/Support.dart';
+import 'WorkingSearchUser.dart';
 
 class AdvisorMenu extends StatefulWidget {
   @override
@@ -94,7 +95,7 @@ class _AdvisorMenuState extends State<AdvisorMenu> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => SearchUser()));
+                      builder: (BuildContext context) => SearchUserPage()));
             },
           ),
           ListTile(

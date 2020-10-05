@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'InsuranceButtons.dart';
 
+import '../erroralert.dart';
+import 'dart:async';
+import 'dart:io';
+
 class InsuranceHomePage extends StatefulWidget {
   String currentUserID;
   InsuranceHomePage({@required this.currentUserID});
@@ -11,6 +15,7 @@ class InsuranceHomePage extends StatefulWidget {
 
 class _InsuranceHomePageState extends State<InsuranceHomePage> {
   String currentUserID;
+  bool _loading;
   _InsuranceHomePageState({@required this.currentUserID});
   @override
   Widget build(BuildContext context) {
@@ -32,7 +37,15 @@ class _InsuranceHomePageState extends State<InsuranceHomePage> {
           style: TextStyle(color: Color(0xff373D3F)),
         ),
       ),
-      body: LayoutBuilder(
+      body:  _loading
+          ? Center(
+          child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+      backgroundColor: Color(0xff63E2E0),
+          ),
+      )
+            :
+      LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
         return SingleChildScrollView(
           child: ConstrainedBox(
