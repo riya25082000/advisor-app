@@ -17,10 +17,18 @@ class _SupportState extends State<Support> {
 
   List advisorcategory = [], usercategory = [];
   List searchList = [];
-  List ques = [], supcategory = [];
+  List ques = [], supcategory = [], supcategory1 = [];
+  var url;
+  int supp =0;
   Future userSearchData() async {
     if(supp==0) {
-      var url = 'http://sanjayagarwal.in/Finance App/UserApp/Support/userCategoryData.php';
+      url =
+      'http://sanjayagarwal.in/Finance App/UserApp/Support/userCategoryData.php';
+    }else if (supp==1){
+      url =
+      'http://sanjayagarwal.in/Finance App/UserApp/Support/advisorCategory.php';
+
+    }
       final response = await http.post(url);
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(response.body);
@@ -43,11 +51,8 @@ class _SupportState extends State<Support> {
         //print(supcategory[0]["sid"]);
 
       });
-    }
-    if(supp==1)
-      {
-        
-      }
+
+
   }
   void getCategoryUser() async {
     var url2 =
@@ -145,7 +150,7 @@ class _SupportState extends State<Support> {
   }
 
   TextEditingController searchques = TextEditingController();
-  int supp = 0;
+  //int supp = 0;
   void changes(int index) {
     setState(() {
       supp = index;
