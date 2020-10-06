@@ -6,7 +6,8 @@ class InvestmentHomePage extends StatefulWidget {
   String currentUserID;
   InvestmentHomePage({@required this.currentUserID});
   @override
-  _InvestmentHomePageState createState() => _InvestmentHomePageState(currentUserID: currentUserID);
+  _InvestmentHomePageState createState() =>
+      _InvestmentHomePageState(currentUserID: currentUserID);
 }
 
 class _InvestmentHomePageState extends State<InvestmentHomePage> {
@@ -33,15 +34,7 @@ class _InvestmentHomePageState extends State<InvestmentHomePage> {
           style: TextStyle(color: Color(0xff373D3F)),
         ),
       ),
-      body: _loading
-          ? Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-          backgroundColor: Color(0xff63E2E0),
-        ),
-      )
-          :
-      LayoutBuilder(
+      body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
           return SingleChildScrollView(
             child: ConstrainedBox(
@@ -60,7 +53,9 @@ class _InvestmentHomePageState extends State<InvestmentHomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      InvestmentPack(currentUserID: currentUserID,)));
+                                      InvestmentPack(
+                                        currentUserID: currentUserID,
+                                      )));
                         },
                         child: investmentbuttons(
                             "assets/images/bundles.jpg",

@@ -16,51 +16,42 @@ class _SupportState extends State<Support> {
   _SupportState({@required this.currentUserID});
 
   List advisorcategory = [], usercategory = [];
-
   List searchList = [];
   List ques = [], supcategory = [], supcategory1 = [];
   var url;
-  int supp =0;
+  int supp = 0;
   Future userSearchData() async {
-    if(supp==0) {
+    if (supp == 0) {
       url =
-      'http://sanjayagarwal.in/Finance App/UserApp/Support/userCategoryData.php';
-    }else if (supp==1){
+          'http://sanjayagarwal.in/Finance App/UserApp/Support/userCategoryData.php';
+    } else if (supp == 1) {
       url =
-      'http://sanjayagarwal.in/Finance App/UserApp/Support/advisorCategory.php';
-
+          'http://sanjayagarwal.in/Finance App/UserApp/Support/advisorCategory.php';
     }
-      final response = await http.post(url);
-      if (response.statusCode == 200) {
-        var jsonData = jsonDecode(response.body);
+    final response = await http.post(url);
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
 
-        for (var i = 0; i < jsonData.length; i++) {
-          searchList.add(jsonData[i]['sname']);
-          // searchList.add(jsonData[i]['sid']);
-        }
+      for (var i = 0; i < jsonData.length; i++) {
+        searchList.add(jsonData[i]['sname']);
+        // searchList.add(jsonData[i]['sid']);
       }
+    }
 
-      // print(searchList);
+    // print(searchList);
 
-      var message2 = await jsonDecode(response.body);
-      print("****************************************");
-      print(message2);
-      print("****************************************");
+    var message2 = await jsonDecode(response.body);
+    print("****************************************");
+    print(message2);
+    print("****************************************");
 
-      setState(() {
-        supcategory = message2;
-        //print(supcategory[0]["sid"]);
-
-      });
-
-
+    setState(() {
+      supcategory = message2;
+      //print(supcategory[0]["sid"]);
+    });
   }
 
-  bool _loading;
   void getCategoryUser() async {
-    setState(() {
-      _loading = true;
-    });
     var url2 =
         'http://sanjayagarwal.in/Finance App/UserApp/Support/SupportCategory.php';
     final response2 = await http.post(
@@ -75,7 +66,6 @@ class _SupportState extends State<Support> {
     print("****************************************");
     setState(() {
       usercategory = message2;
-      _loading = false;
     });
   }
 
@@ -110,58 +100,50 @@ class _SupportState extends State<Support> {
   }
 
   Widget supportbuilder(List data) {
-    return _loading
-        ? Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-              backgroundColor: Color(0xff63E2E0),
-            ),
-          )
-        : ListView.builder(
-            physics: ScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: data.length,
-            itemBuilder: (BuildContext cntx, int index) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => showQuestion(
-                                supp,
-                                data[index]["sname"],
-                                int.parse(data[index]["sid"]),
-                                currentUserID: currentUserID,
-                              )));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.purple,
-                        width: 2.0,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(data[index]["sname"]),
-                          Icon(
-                            Icons.print,
-                            size: 50,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+    return ListView.builder(
+      physics: ScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: data.length,
+      itemBuilder: (BuildContext cntx, int index) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => showQuestion(
+                          data[index]["sname"],
+                          int.parse(data[index]["sid"]),
+                          currentUserID: currentUserID,
+                        )));
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.purple,
+                  width: 2.0,
                 ),
-              );
-            },
-          );
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(data[index]["sname"]),
+                    Icon(
+                      Icons.print,
+                      size: 50,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   TextEditingController searchques = TextEditingController();
@@ -196,7 +178,6 @@ class _SupportState extends State<Support> {
           BottomNavigationBarItem(
             icon: Icon(Icons.perm_contact_calendar),
             title: Text("Advisor"),
-
           ),
         ],
       ),
@@ -261,7 +242,8 @@ class _SupportState extends State<Support> {
                           color: Colors.white,
                           onPressed: () {
                             showSearch(
-                                context: context, delegate: UserSearch(list: searchList));
+                                context: context,
+                                delegate: UserSearch(list: searchList));
                           },
                         )
                       ],
@@ -284,7 +266,8 @@ class UserSearch extends SearchDelegate<String> {
   UserSearch({this.list});
 
   Future userData() async {
-    var url = 'http://sanjayagarwal.in/Finance App/UserApp/Support/SupportCategoryData.php';
+    var url =
+        'http://sanjayagarwal.in/Finance App/UserApp/Support/SupportCategoryData.php';
     final response = await http.post(
       url,
       body: jsonEncode(<String, String>{
@@ -294,7 +277,7 @@ class UserSearch extends SearchDelegate<String> {
 
     if (response.statusCode == 200) {
       List jsonData = jsonDecode(response.body);
-      list3=jsonData[0]["sid"];
+      list3 = jsonData[0]["sid"];
 
       list2 = jsonData;
       print(
@@ -305,8 +288,6 @@ class UserSearch extends SearchDelegate<String> {
           "**********************************************************************");
       return jsonData;
     }
-
-
   }
 
   @override
@@ -345,21 +326,17 @@ class UserSearch extends SearchDelegate<String> {
 
                 var list = snapshot.data[index];
 
-
                 //print(list);
 
                 SchedulerBinding.instance.addPostFrameCallback((_) {
-
-
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) => showQuestion(
-                            list["sname"],
-                            int.parse(list3),
-                            currentUserID: "987654321",
-                          )));
-
+                                list["sname"],
+                                int.parse(list3),
+                                currentUserID: "987654321",
+                              )));
                 });
 
                 return ListTile(
@@ -379,21 +356,20 @@ class UserSearch extends SearchDelegate<String> {
         : list.where((element) => element.contains(query)).toList();
     return listData.isEmpty
         ? Center(
-        child: Text(
-          'NO CATEGORY FOUND',
-          style: TextStyle(fontSize: 20),
-        ))
+            child: Text(
+            'NO CATEGORY FOUND',
+            style: TextStyle(fontSize: 20),
+          ))
         : ListView.builder(
-        itemCount: listData.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () {
-              query = listData[index];
-              showResults(context);
-            },
-            title: Text(listData[index]),
-          );
-        });
+            itemCount: listData.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () {
+                  query = listData[index];
+                  showResults(context);
+                },
+                title: Text(listData[index]),
+              );
+            });
   }
 }
-

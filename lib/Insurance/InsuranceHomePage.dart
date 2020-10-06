@@ -10,7 +10,8 @@ class InsuranceHomePage extends StatefulWidget {
   String currentUserID;
   InsuranceHomePage({@required this.currentUserID});
   @override
-  _InsuranceHomePageState createState() => _InsuranceHomePageState(currentUserID: currentUserID);
+  _InsuranceHomePageState createState() =>
+      _InsuranceHomePageState(currentUserID: currentUserID);
 }
 
 class _InsuranceHomePageState extends State<InsuranceHomePage> {
@@ -37,15 +38,7 @@ class _InsuranceHomePageState extends State<InsuranceHomePage> {
           style: TextStyle(color: Color(0xff373D3F)),
         ),
       ),
-      body:  _loading
-          ? Center(
-          child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-      backgroundColor: Color(0xff63E2E0),
-          ),
-      )
-            :
-      LayoutBuilder(
+      body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
         return SingleChildScrollView(
           child: ConstrainedBox(
