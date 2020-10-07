@@ -5,6 +5,7 @@ import 'package:advisorapplication/Learning/LearningHomePage.dart';
 import 'package:advisorapplication/LoginSignUp/AdvisorLogin.dart';
 import 'package:advisorapplication/NewsLetter/NewsLetter.dart';
 import 'package:advisorapplication/SearchUser.dart';
+import 'package:advisorapplication/Security/SecurityMenu.dart';
 import 'package:advisorapplication/WorkingSearchUser.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,8 +14,7 @@ import 'Support/Support.dart';
 
 import 'WorkingSearchUser.dart';
 
-import 'changePassword.dart';
-
+import 'Security/changePassword.dart';
 
 class AdvisorMenu extends StatefulWidget {
   String currentAdvisorID;
@@ -122,12 +122,12 @@ class _AdvisorMenuState extends State<AdvisorMenu> {
             },
           ),
           ListTile(
-            title: Text('Change Password'),
+            title: Text('Security Controls'),
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => ChangePassword(
+                      builder: (BuildContext context) => SecurityMenu(
                             currentAdvisorID: currentAdvisorID,
                           )));
             },
@@ -136,7 +136,7 @@ class _AdvisorMenuState extends State<AdvisorMenu> {
             title: Text('Sign Out'),
             onTap: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.remove('email');
+              prefs.remove('advisorid');
               Navigator.of(context).pushAndRemoveUntil(
                 // the new route
                 MaterialPageRoute(

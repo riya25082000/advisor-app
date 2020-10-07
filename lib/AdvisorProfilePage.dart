@@ -66,8 +66,9 @@ class _AdvisorProfileState extends State<AdvisorProfile> {
     var message1 = await jsonDecode(response1.body);
     if (message1 == "Successful Updation") {
       print("Successfully Updated");
+      getUserData();
     } else {
-      print(message1["message"]);
+      print(message1);
     }
   }
 
