@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:advisorapplication/AdvisorHomePage.dart';
 import 'package:advisorapplication/UserInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,16 +15,27 @@ import 'UserInfo.dart';
 import 'UserInfo.dart';
 
 class SearchUserPage extends StatefulWidget {
+  final String currentAdvisorID;
+  SearchUserPage({Key key, @required this.currentAdvisorID}) : super(key: key);
   @override
-  _SearchUserPage createState() => _SearchUserPage();
+  _SearchUserPage createState() => _SearchUserPage(currentAdvisorID: currentAdvisorID);
 }
 // //
 
 class _SearchUserPage extends State<SearchUserPage> {
+
+  String currentAdvisorID;
+  _SearchUserPage({@required this.currentAdvisorID});
+
   List searchList = [];
   Future userSearchData() async {
     var url = 'http://sanjayagarwal.in/Finance App/SearchUser.php';
-    final response = await http.post(url);
+    print(currentAdvisorID);
+    final response = await http.post(url,
+    body: jsonEncode(<String, String>{
+        "id":currentAdvisorID
+    }),
+    );
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
 
@@ -48,7 +60,13 @@ class _SearchUserPage extends State<SearchUserPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            //Navigator.pop(context);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AdvisorHomePage(
+                      currentAdvisorID: currentAdvisorID,
+                    )));
           },
           icon: Icon(Icons.arrow_back_ios),
           color: Color(0xff373D3F),
@@ -63,7 +81,7 @@ class _SearchUserPage extends State<SearchUserPage> {
           IconButton(
             onPressed: () {
               showSearch(
-                  context: context, delegate: UserSearch(list: searchList));
+                  context: context, delegate: UserSearch(list: searchList,currentAdvisorID: currentAdvisorID));
             },
             icon: Icon(Icons.search),
             color: Color(0xff373D3F),
@@ -75,8 +93,9 @@ class _SearchUserPage extends State<SearchUserPage> {
 }
 
 class UserSearch extends SearchDelegate<String> {
+  String currentAdvisorID;
   List<dynamic> list;
-  UserSearch({this.list});
+  UserSearch({this.list, this.currentAdvisorID});
 
   Future userData() async {
     var url = 'http://sanjayagarwal.in/Finance App/userData.php';
@@ -84,6 +103,7 @@ class UserSearch extends SearchDelegate<String> {
       url,
       body: jsonEncode(<String, String>{
         "Name": query,
+        "id":currentAdvisorID
       }),
     );
 

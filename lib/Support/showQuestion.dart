@@ -2,18 +2,22 @@ import 'package:advisorapplication/Support/Support.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class showQuestion extends StatefulWidget {
-  String currentUserID;
+  String currentAdvisorID;
   String cate;
   int suid;
-  showQuestion(this.cate, this.suid, {@required this.currentUserID});
+  showQuestion(this.cate, this.suid, {@required this.currentAdvisorID});
   @override
   _showQuestionState createState() =>
-      _showQuestionState(currentUserID: currentUserID);
+      _showQuestionState(currentAdvisorID: currentAdvisorID);
 }
 
 class _showQuestionState extends State<showQuestion> {
+  SharedPreferences preferences;
+  String currentAdvisorID;
+  _showQuestionState({@required this.currentAdvisorID});
   List quesuser = [], quesadvisor = [];
   void getQuesUser() async {
     print(widget.suid.toString());
@@ -56,7 +60,7 @@ class _showQuestionState extends State<showQuestion> {
   @override
   void initState() {
     print("****************************************");
-    print(currentUserID);
+    print(currentAdvisorID);
     print("****************************************");
     getQuesUser();
     getQuesAdvisor();
@@ -76,7 +80,7 @@ class _showQuestionState extends State<showQuestion> {
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
-                color: Colors.purple,
+                color: Color(0xff63E2E0),
                 width: 2.0,
               ),
             ),
@@ -96,8 +100,7 @@ class _showQuestionState extends State<showQuestion> {
     );
   }
 
-  String currentUserID;
-  _showQuestionState({@required this.currentUserID});
+
 
   int question = 0;
   void changes(int index) {
