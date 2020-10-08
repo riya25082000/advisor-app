@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 import 'AdvisorMenu.dart';
 
-class AdvisorHomePage extends StatefulWidget {
+class AdvisorHomePage1 extends StatefulWidget {
   String currentAdvisorID;
-  AdvisorHomePage({@required this.currentAdvisorID});
+  AdvisorHomePage1({@required this.currentAdvisorID});
   @override
   _AdvisorHomePageState createState() =>
       _AdvisorHomePageState(currentAdvisorID: currentAdvisorID);
 }
 
-class _AdvisorHomePageState extends State<AdvisorHomePage> {
+class _AdvisorHomePageState extends State<AdvisorHomePage1> {
   String currentAdvisorID;
   _AdvisorHomePageState({@required this.currentAdvisorID});
   @override

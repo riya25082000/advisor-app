@@ -1,6 +1,8 @@
+import 'package:advisorapplication/mpinChange.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../disableTouchid.dart';
 import 'changePassword.dart';
 
 class SecurityMenu extends StatefulWidget {
@@ -80,7 +82,15 @@ class _SecurityMenuState extends State<SecurityMenu> {
                 child: Column(
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    DisableTouchID(
+                                      currentAdvisorID: currentAdvisorID,
+                                    )));
+                      },
                       child: option(
                           height, width, "Touch ID", "Enable/Disable TouchID"),
                     ),
@@ -88,7 +98,16 @@ class _SecurityMenuState extends State<SecurityMenu> {
                       height: 10,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    ChangeMpin(
+                                      currentAdvisorID: currentAdvisorID,
+                                    )));
+
+                      },
                       child: option(
                           height, width, "Change Mpin", "Reset your Mpin"),
                     ),

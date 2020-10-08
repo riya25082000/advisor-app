@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../NewAdvisorHomePage.dart';
 import 'showQuestion.dart';
 
 class Support extends StatefulWidget {
-  String currentUserID;
-  Support({@required this.currentUserID});
+  String currentAdvisorID;
+  Support({@required this.currentAdvisorID});
   @override
-  _SupportState createState() => _SupportState(currentUserID: currentUserID);
+  _SupportState createState() => _SupportState(currentAdvisorID: currentAdvisorID);
 }
 
 class _SupportState extends State<Support> {
-  String currentUserID;
-  _SupportState({@required this.currentUserID});
+  String currentAdvisorID;
+  _SupportState({@required this.currentAdvisorID});
 
   List advisorcategory = [], usercategory = [];
   List searchList = [];
@@ -51,13 +52,41 @@ class _SupportState extends State<Support> {
     });
   }
 
+  Future userCategoryData() async {
+
+      url =
+      'http://sanjayagarwal.in/Finance App/UserApp/Support/advisorCategory.php';
+
+    final response = await http.post(url);
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+
+      for (var i = 0; i < jsonData.length; i++) {
+        searchList.add(jsonData[i]['sname']);
+        // searchList.add(jsonData[i]['sid']);
+      }
+    }
+
+    // print(searchList);
+
+    var message2 = await jsonDecode(response.body);
+    print("****************************************");
+    print(message2);
+    print("****************************************");
+
+    setState(() {
+      supcategory = message2;
+      //print(supcategory[0]["sid"]);
+    });
+  }
+
   void getCategoryUser() async {
     var url2 =
         'http://sanjayagarwal.in/Finance App/UserApp/Support/SupportCategory.php';
     final response2 = await http.post(
       url2,
       body: jsonEncode(<String, String>{
-        "UserID": currentUserID,
+        "UserID": currentAdvisorID,
       }),
     );
     var message2 = await jsonDecode(response2.body);
@@ -75,7 +104,7 @@ class _SupportState extends State<Support> {
     final response2 = await http.post(
       url2,
       body: jsonEncode(<String, String>{
-        "UserID": currentUserID,
+        "UserID": currentAdvisorID,
       }),
     );
     var message2 = await jsonDecode(response2.body);
@@ -90,11 +119,12 @@ class _SupportState extends State<Support> {
   @override
   void initState() {
     print("****************************************");
-    print(currentUserID);
+    print(currentAdvisorID);
     print("****************************************");
     getCategoryUser();
     getCategoryAdvisor();
     userSearchData();
+    userCategoryData();
     // TODO: implement initState
     super.initState();
   }
@@ -113,7 +143,7 @@ class _SupportState extends State<Support> {
                     builder: (BuildContext context) => showQuestion(
                           data[index]["sname"],
                           int.parse(data[index]["sid"]),
-                          currentUserID: currentUserID,
+                      currentAdvisorID: currentAdvisorID,
                         )));
           },
           child: Padding(
@@ -122,7 +152,7 @@ class _SupportState extends State<Support> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(
-                  color: Colors.purple,
+                  color: Color(0xff63E2E0),
                   width: 2.0,
                 ),
               ),
@@ -202,7 +232,13 @@ class _SupportState extends State<Support> {
                       padding: const EdgeInsets.only(top: 10.0),
                       child: IconButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pushReplacement(
+                              new MaterialPageRoute(builder: (BuildContext context) {
+                                return AdvisorHomePage1(
+                                  currentAdvisorID: currentAdvisorID,
+                                );
+                              }));
+                          //Navigator.pop(context);
                         },
                         icon: Icon(Icons.arrow_back_ios),
                         color: Colors.white,
@@ -335,7 +371,7 @@ class UserSearch extends SearchDelegate<String> {
                           builder: (BuildContext context) => showQuestion(
                                 list["sname"],
                                 int.parse(list3),
-                                currentUserID: "987654321",
+                            currentAdvisorID: "987654321",
                               )));
                 });
 
