@@ -26,8 +26,7 @@ class _SupportState extends State<Support> {
       url =
           'http://sanjayagarwal.in/Finance App/UserApp/Support/userCategoryData.php';
 
-      // url =
-      //     'http://sanjayagarwal.in/Finance App/UserApp/Support/advisorCategory.php';
+
 
     final response = await http.post(url);
     if (response.statusCode == 200) {
@@ -177,11 +176,11 @@ class _SupportState extends State<Support> {
   }
 
   TextEditingController searchques = TextEditingController();
-  //int supp = 0;
+
   void changes(int index) {
     setState(() {
       supp = index;
-      //print(supp);
+
     });
   }
 
@@ -323,12 +322,12 @@ class UserSearch extends SearchDelegate<String> {
         List jsonData = jsonDecode(response.body);
         list3 = jsonData[0]["sid"];
         list2 = jsonData;
-        print(
-            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-        print("list3");
-        print(list3);
-        print(
-            "**********************************************************************");
+        // print(
+        //     "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        // print("list3");
+        // print(list3);
+        // print(
+        //     "**********************************************************************");
         return jsonData;
 
       }
@@ -347,12 +346,12 @@ class UserSearch extends SearchDelegate<String> {
         List jsonData = jsonDecode(response1.body);
         list3 = jsonData[0]["sid"];
         list2 = jsonData;
-        print(
-            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-        print("list3");
-        print(list3);
-        print(
-            "**********************************************************************");
+        // print(
+        //     "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        // print("list3");
+        // print(list3);
+        // print(
+        //     "**********************************************************************");
         return jsonData;
       }
     }
@@ -395,9 +394,9 @@ class UserSearch extends SearchDelegate<String> {
                 var list = snapshot.data[index];
 
                 //print(list);
-                print('show');
-                    print(list["sname"]);
-                    print(int.parse(list3));
+                // print('show');
+                //     print(list["sname"]);
+                //     print(int.parse(list3));
                 SchedulerBinding.instance.addPostFrameCallback((_) {
                   Navigator.push(
                       context,
