@@ -11,24 +11,24 @@ class Support extends StatefulWidget {
   @override
   _SupportState createState() => _SupportState(currentAdvisorID: currentAdvisorID);
 }
-
+int supp = 0;
 class _SupportState extends State<Support> {
   String currentAdvisorID;
   _SupportState({@required this.currentAdvisorID});
 
   List advisorcategory = [], usercategory = [];
-  List searchList = [];
+  List searchList = [],searchList1 = [];
   List ques = [], supcategory = [], supcategory1 = [];
   var url;
-  int supp = 0;
+
   Future userSearchData() async {
-    if (supp == 0) {
+
       url =
           'http://sanjayagarwal.in/Finance App/UserApp/Support/userCategoryData.php';
-    } else if (supp == 1) {
-      url =
-          'http://sanjayagarwal.in/Finance App/UserApp/Support/advisorCategory.php';
-    }
+
+      // url =
+      //     'http://sanjayagarwal.in/Finance App/UserApp/Support/advisorCategory.php';
+
     final response = await http.post(url);
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
@@ -42,9 +42,9 @@ class _SupportState extends State<Support> {
     // print(searchList);
 
     var message2 = await jsonDecode(response.body);
-    print("****************************************");
-    print(message2);
-    print("****************************************");
+    // print("****************************************");
+    // print(message2);
+    // print("****************************************");
 
     setState(() {
       supcategory = message2;
@@ -62,7 +62,7 @@ class _SupportState extends State<Support> {
       var jsonData = jsonDecode(response.body);
 
       for (var i = 0; i < jsonData.length; i++) {
-        searchList.add(jsonData[i]['sname']);
+        searchList1.add(jsonData[i]['sname']);
         // searchList.add(jsonData[i]['sid']);
       }
     }
@@ -70,9 +70,9 @@ class _SupportState extends State<Support> {
     // print(searchList);
 
     var message2 = await jsonDecode(response.body);
-    print("****************************************");
-    print(message2);
-    print("****************************************");
+    // print("****************************************");
+    // print(message2);
+    // print("****************************************");
 
     setState(() {
       supcategory = message2;
@@ -90,9 +90,9 @@ class _SupportState extends State<Support> {
       }),
     );
     var message2 = await jsonDecode(response2.body);
-    print("****************************************");
-    print(message2);
-    print("****************************************");
+    // print("****************************************");
+    // print(message2);
+    // print("****************************************");
     setState(() {
       usercategory = message2;
     });
@@ -108,9 +108,9 @@ class _SupportState extends State<Support> {
       }),
     );
     var message2 = await jsonDecode(response2.body);
-    print("****************************************");
-    print(message2);
-    print("****************************************");
+    // print("****************************************");
+    // print(message2);
+    // print("****************************************");
     setState(() {
       advisorcategory = message2;
     });
@@ -118,9 +118,9 @@ class _SupportState extends State<Support> {
 
   @override
   void initState() {
-    print("****************************************");
-    print(currentAdvisorID);
-    print("****************************************");
+    // print("****************************************");
+    // print(currentAdvisorID);
+    // print("****************************************");
     getCategoryUser();
     getCategoryAdvisor();
     userSearchData();
@@ -181,7 +181,7 @@ class _SupportState extends State<Support> {
   void changes(int index) {
     setState(() {
       supp = index;
-      print(supp);
+      //print(supp);
     });
   }
 
@@ -277,9 +277,17 @@ class _SupportState extends State<Support> {
                           icon: Icon(Icons.search),
                           color: Colors.white,
                           onPressed: () {
-                            showSearch(
-                                context: context,
-                                delegate: UserSearch(list: searchList));
+                            if(supp==0) {
+                              showSearch(
+                                  context: context,
+                                  delegate: UserSearch(list: searchList));
+                            }
+                            else if(supp==1)
+                              {
+                                showSearch(
+                                    context: context,
+                                    delegate: UserSearch(list: searchList1));
+                              }
                           },
                         )
                       ],
@@ -302,27 +310,51 @@ class UserSearch extends SearchDelegate<String> {
   UserSearch({this.list});
 
   Future userData() async {
-    var url =
-        'http://sanjayagarwal.in/Finance App/UserApp/Support/SupportCategoryData.php';
-    final response = await http.post(
-      url,
-      body: jsonEncode(<String, String>{
-        "Name": query,
-      }),
-    );
+    if (supp == 0) {
+      var url =
+          'http://sanjayagarwal.in/Finance App/UserApp/Support/SupportCategoryData.php';
+      final response = await http.post(
+        url,
+        body: jsonEncode(<String, String>{
+          "Name": query,
+        }),
+      );
+      if (response.statusCode == 200) {
+        List jsonData = jsonDecode(response.body);
+        list3 = jsonData[0]["sid"];
+        list2 = jsonData;
+        print(
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        print("list3");
+        print(list3);
+        print(
+            "**********************************************************************");
+        return jsonData;
 
-    if (response.statusCode == 200) {
-      List jsonData = jsonDecode(response.body);
-      list3 = jsonData[0]["sid"];
-
-      list2 = jsonData;
-      print(
-          "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-      print("answer");
-      print(list3);
-      print(
-          "**********************************************************************");
-      return jsonData;
+      }
+    }
+    else if (supp==1) {
+      print("supp");
+      print(supp);
+      var url1 = 'http://sanjayagarwal.in/Finance%20App/UserApp/Support/supportCategoryAdvisor.php';
+      final response1 = await http.post(
+        url1,
+        body: jsonEncode(<String, String>{
+          "Name": query,
+        }),
+      );
+      if (response1.statusCode == 200) {
+        List jsonData = jsonDecode(response1.body);
+        list3 = jsonData[0]["sid"];
+        list2 = jsonData;
+        print(
+            "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        print("list3");
+        print(list3);
+        print(
+            "**********************************************************************");
+        return jsonData;
+      }
     }
   }
 
@@ -363,7 +395,9 @@ class UserSearch extends SearchDelegate<String> {
                 var list = snapshot.data[index];
 
                 //print(list);
-
+                print('show');
+                    print(list["sname"]);
+                    print(int.parse(list3));
                 SchedulerBinding.instance.addPostFrameCallback((_) {
                   Navigator.push(
                       context,
