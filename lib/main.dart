@@ -1,4 +1,3 @@
-
 import 'package:advisorapplication/NewAdvisorHomePage.dart';
 import 'package:advisorapplication/SetPin.dart';
 import 'package:advisorapplication/WorkingSearchUser.dart';
@@ -17,12 +16,10 @@ Future<void> main() async {
   var aid = prefs.getString('advisorid');
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-     home:
-    aid == null
+    home: aid == null
         ? AdvisorLogin()
-       :
-    PassCodeScreen(
-            currentAdvisorID: '8949517',
+        : PassCodeScreen(
+            currentAdvisorID: aid,
           ),
   ));
 }

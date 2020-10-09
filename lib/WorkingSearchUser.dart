@@ -159,6 +159,7 @@ class UserSearch extends SearchDelegate<String> {
                       MaterialPageRoute(
                           builder: (BuildContext context) => UserInfo(
                                 currentUserID: list['UserID'],
+                                currentAdvisorID: currentAdvisorID,
                               )));
                 });
 

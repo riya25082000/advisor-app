@@ -1,3 +1,4 @@
+import 'package:advisorapplication/Income_Expenses/income2.dart';
 import 'package:advisorapplication/UserPages/Learning/LearningHomePage.dart';
 import 'package:advisorapplication/UserPages/NewsLetter/NewsLetter.dart';
 import 'package:flutter/material.dart';
@@ -7,15 +8,17 @@ import 'UserPages/RewardsandRefer/newRefer.dart';
 import 'WorkingSearchUser.dart';
 
 class UserInfo extends StatefulWidget {
-  String currentUserID;
-  UserInfo({@required this.currentUserID});
+  String currentUserID, currentAdvisorID;
+  UserInfo({@required this.currentUserID, @required this.currentAdvisorID});
   @override
-  _UserInfoState createState() => _UserInfoState(currentUserID: currentUserID);
+  _UserInfoState createState() => _UserInfoState(
+      currentUserID: currentUserID, currentAdvisorID: currentAdvisorID);
 }
 
 class _UserInfoState extends State<UserInfo> {
-  String currentUserID;
-  _UserInfoState({@required this.currentUserID});
+  String currentUserID, currentAdvisorID;
+  _UserInfoState(
+      {@required this.currentUserID, @required this.currentAdvisorID});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +29,9 @@ class _UserInfoState extends State<UserInfo> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => SearchUserPage()));
+                      builder: (BuildContext context) => SearchUserPage(
+                            currentAdvisorID: currentAdvisorID,
+                          )));
             });
           },
           icon: Icon(Icons.arrow_back_ios),
@@ -71,7 +76,14 @@ class _UserInfoState extends State<UserInfo> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => income2(
+                                    currentUserID: currentUserID,
+                                  )));
+                    },
                     child: Container(
                       child: Row(
                         children: [
