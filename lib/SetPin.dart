@@ -75,6 +75,32 @@ class _SetPinState extends State<SetPin> {
     }
   }
 
+  String validatePin1(String value) {
+    if (value.isEmpty) {
+      _loading = false;
+      return 'Pin must not be blank';
+    } else if (value.length > 4) {
+      _loading = false;
+      return 'Pin must be of 4 digits';
+    } else
+      return null;
+  }
+  bool _loading = false;
+
+  bool _autoValidate = false;
+  void _validateInputs() {
+    if (_formKey.currentState.validate()) {
+//    If all data are correct then save data to out variables
+      _formKey.currentState.save();
+      setMPin();
+    } else {
+//    If all data are not valid then start auto validation.
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -145,6 +171,7 @@ class _SetPinState extends State<SetPin> {
                       ),
                       Form(
                           key: _formKey,
+                          autovalidate: _autoValidate,
                           child: SingleChildScrollView(
                             child: Column(
                               children: <Widget>[
@@ -163,17 +190,18 @@ class _SetPinState extends State<SetPin> {
                                         icon: Icon(Icons.visibility_off),
                                       )
                                   ),
-                                  validator: (String value1) {
-                                    val = value1;
-                                    Fluttertoast.showToast(msg: val);
-                                    if (value1.isEmpty) {
-                                      return 'Please enter a security pin';
-                                    }
-                                    if (value1.length > 4) {
-                                      return 'Pin must contain four digits only. ';
-                                    }
-                                    return null;
-                                  },
+                                  validator: validatePin1,
+                                  // validator: (String value1) {
+                                  //   val = value1;
+                                  //   Fluttertoast.showToast(msg: val);
+                                  //   if (value1.isEmpty) {
+                                  //     return 'Please enter a security pin';
+                                  //   }
+                                  //   if (value1.length > 4) {
+                                  //     return 'Pin must contain four digits only. ';
+                                  //   }
+                                  //   return null;
+                                  // },
                                   controller: _pinController,
                                   onSaved: (value) {},
                                 ),
@@ -194,10 +222,10 @@ class _SetPinState extends State<SetPin> {
                                         icon: Icon(Icons.visibility_off),
                                       )
                                   ),
-                                  validator: (String value) {
-                                    if (value != val) {
-                                      return 'Pin does not match';
-                                    }
+                                  validator: (val) {
+                                    if (val.isEmpty)
+                                      return 'Pin field cannot be empty';
+                                    if (val != _pinController.text) return 'Pins do not match';
                                     return null;
                                   },
                                   onSaved: (value) {},
@@ -210,7 +238,12 @@ class _SetPinState extends State<SetPin> {
                         height: 15,
                       ),
                       RaisedButton(
-                        onPressed: setMPin,
+                        onPressed: (){
+                          setState(() {
+                            _loading = true;
+                          });
+                          _validateInputs();
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(

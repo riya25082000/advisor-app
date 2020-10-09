@@ -21,7 +21,7 @@ Future<void> main() async {
     aid == null
         ? AdvisorLogin()
        :
-    PassCodeScreen(
+    SetPin(
             currentAdvisorID: '8949517',
           ),
   ));
