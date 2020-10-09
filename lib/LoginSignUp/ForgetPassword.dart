@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:advisorapplication/AdvisorHomePage.dart';
+import 'package:advisorapplication/LoginSignUp/AdvisorLogin.dart';
+import 'package:advisorapplication/NewAdvisorHomePage.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -224,9 +226,7 @@ class _ForgetPassPageState extends State<ForgetPassPage> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    AdvisorHomePage(
-
-                    )));
+                    AdvisorLogin()));
 
         setState(() {
           isEmail = true;

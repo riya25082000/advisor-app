@@ -1,4 +1,5 @@
 import 'package:advisorapplication/AdvisorHomePage.dart';
+import 'package:advisorapplication/NewAdvisorHomePage.dart';
 import 'package:flutter/material.dart';
 
 
@@ -17,9 +18,7 @@ Widget alertinternet(BuildContext context, String currentUserID) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AdvisorHomePage(
-                        // currentUserID: currentUserID,
-                      )));
+                      builder: (BuildContext context) => AdvisorHomePage1()));
             },
             child: Text("Ok"),
           )
@@ -73,9 +72,7 @@ Widget alerterror(BuildContext context, String currentUserID) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AdvisorHomePage(
-
-                      )));
+                      builder: (BuildContext context) => AdvisorHomePage1()));
             },
             child: Text("Ok"),
           )

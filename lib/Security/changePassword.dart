@@ -70,7 +70,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              AdvisorHomePage1()));
+                              AdvisorHomePage1(currentAdvisorID: currentAdvisorID,)));
                 },
                 child: Text("Ok"),
               )

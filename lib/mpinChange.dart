@@ -1,6 +1,7 @@
 
 
 import 'package:advisorapplication/AdvisorHomePage.dart';
+import 'package:advisorapplication/NewAdvisorHomePage.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -49,7 +50,7 @@ class _ChangeMpinState extends State<ChangeMpin> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => SetPin()));
+                          builder: (BuildContext context) => SetPin(currentAdvisorID: currentAdvisorID,)));
                 },
                 child: Text("Ok"),
               )
@@ -90,7 +91,7 @@ class _ChangeMpinState extends State<ChangeMpin> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => AdvisorHomePage()));
+                          builder: (BuildContext context) => AdvisorHomePage1(currentAdvisorID: currentAdvisorID,)));
                 },
                 child: Text("Ok"),
               )

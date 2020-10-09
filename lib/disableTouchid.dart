@@ -18,7 +18,7 @@ class DisableTouchID extends StatefulWidget {
 class _DisableTouchIDState extends State<DisableTouchID> {
   String currentAdvisorID ;
   _DisableTouchIDState({@required this.currentAdvisorID});
-  String dropdownValue;
+  String dropdownValue = "Enable";
 
   @override
   void initState() {

@@ -1,4 +1,5 @@
 import 'package:advisorapplication/AdvisorHomePage.dart';
+import 'package:advisorapplication/NewAdvisorHomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,7 +25,7 @@ class TouchScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AdvisorHomePage(),
+                  builder: (context) => AdvisorHomePage1(),
                 ),
               );
             }

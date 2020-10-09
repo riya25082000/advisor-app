@@ -120,7 +120,7 @@ class _AdvisorMenuState extends State<AdvisorMenu> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => Support()));
+                      builder: (BuildContext context) => Support(currentAdvisorID: currentAdvisorID,)));
             },
           ),
           ListTile(
