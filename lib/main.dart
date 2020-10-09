@@ -18,6 +18,7 @@ Future<void> main() async {
     debugShowCheckedModeBanner: false,
     home: aid == null
         ? AdvisorLogin()
+
         : PassCodeScreen(
             currentAdvisorID: aid,
           ),
