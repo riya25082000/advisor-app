@@ -15,14 +15,46 @@ class DisableTouchID extends StatefulWidget {
 
 
 
+
 class _DisableTouchIDState extends State<DisableTouchID> {
   String currentAdvisorID ;
   _DisableTouchIDState({@required this.currentAdvisorID});
-  String dropdownValue = "Enable";
+  String dropdownValue ;
 
   @override
   void initState() {
     super.initState();
+    TouchIDGet();
+  }
+  Future TouchIDGet() async {
+    int able;
+
+    var url =
+        'http://sanjayagarwal.in/Finance App/UserApp/SignIn and SignUp/touchIDGet1.php';
+
+    print(currentAdvisorID);
+
+    final response1 = await http.post(
+      url,
+      body: jsonEncode(<String, String>{
+        "UserID": currentAdvisorID,
+      }),
+    );
+    var message1 = jsonDecode(response1.body);
+    if (message1 == "1") {
+      //dropdownValue='Disable';
+
+      setState(() {
+        dropdownValue='Disable';
+      });
+    }
+    else if(message1 == "0") {
+      setState(() {
+        dropdownValue='Enable';
+      });
+    }
+    print("dem");
+    print(message1);
   }
   Future TouchIDUpdate() async {
     int able;
@@ -48,6 +80,7 @@ class _DisableTouchIDState extends State<DisableTouchID> {
     var message1 = jsonDecode(response1.body);
     if (message1 == "Successful Updation") {
       print(message1);
+      TouchIDGet();
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -143,7 +176,7 @@ class _DisableTouchIDState extends State<DisableTouchID> {
                     TouchIDUpdate();
                   },
                   child: Text(
-                    "Change Password",
+                    "Change ",
                     style: TextStyle(
                         color: Color(0xff373D3F),
                         fontSize: 25,
