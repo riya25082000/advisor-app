@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:string_validator/string_validator.dart' as st_validator;
 import 'package:http/http.dart' as http;
 
-import '../AdvisorHomePage.dart';
 import '../NewAdvisorHomePage.dart';
 
 class AdvisorLogin extends StatefulWidget {
@@ -27,9 +26,7 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
     });
   }
 
-  Future userLogin() async {
-    String email = emailController.text;
-    String password = passwordController.text;
+  Future LoginAdvisor() async {
     var url = 'http://sanjayagarwal.in/Finance App/AdvisorApp/AdvisorLogin.php';
     final response = await http.post(
       url,
@@ -66,14 +63,69 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => AdvisorHomePage(
+              builder: (context) => AdvisorHomePage1(
                     currentAdvisorID: message.toString(),
                   )));
     }
   }
 
+  String email, password;
+  String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (value.isEmpty) {
+      _loading = false;
+      return 'Please enter a valid email';
+    } else if (!regex.hasMatch(value)) {
+      _loading = false;
+      return 'Enter Valid Email';
+    } else
+      return null;
+  }
+
+  String validatePassword(String value) {
+    if (value.isEmpty) {
+      _loading = false;
+      return 'Please enter a password';
+    } else if (value.length < 8) {
+      _loading = false;
+      return 'Password must be greater than 8 alphabets';
+    } else {
+      return null;
+    }
+  }
+
+  bool _loading = false;
+  final _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+  void _validateInputs() {
+    if (_formKey.currentState.validate()) {
+//    If all data are correct then save data to out variables
+      _formKey.currentState.save();
+      LoginAdvisor();
+    } else {
+//    If all data are not valid then start auto validation.
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget loadingIndicator = _loading
+        ? new Container(
+            width: 70.0,
+            height: 70.0,
+            child: new Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: new Center(
+                    child: new CircularProgressIndicator(
+                  backgroundColor: Color(0xff63E2E0),
+                ))),
+          )
+        : new Container();
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -104,22 +156,16 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
                       ),
                     ),
                     Form(
+                      key: _formKey,
+                      autovalidate: _autoValidate,
                       child: Column(
                         children: [
                           TextFormField(
                             controller: emailController,
-                            decoration: textfield("Phone Number/ Email"),
-                            validator: (value1) {
-                              if (value1.isEmpty) {
-                                return 'Please enter an email address';
-                              }
-                              if (st_validator.isEmail(value1)) {
-                                return 'Enter a valid email address';
-                              }
-                              if (value1.split('@').length != 2) {
-                                return 'Enter a valid email address';
-                              }
-                              return null;
+                            decoration: textfield("Email"),
+                            validator: validateEmail,
+                            onSaved: (v1) {
+                              email = v1;
                             },
                           ),
                           SizedBox(
@@ -146,17 +192,10 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
                                   onPressed: _toggleVisibility,
                                   icon: Icon(Icons.visibility_off),
                                 )),
-                            validator: (String value) {
-                              val = value;
-                              if (value.isEmpty) {
-                                return 'Please enter a password';
-                              }
-                              if (value.length < 8) {
-                                return 'Password must be greater than 8 alphabets';
-                              }
-                              return null;
+                            validator: validatePassword,
+                            onSaved: (v2) {
+                              password = v2;
                             },
-                            onSaved: (value) {},
                           ),
                         ],
                       ),
@@ -182,7 +221,10 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
                     ),
                     RaisedButton(
                       onPressed: () {
-                        userLogin();
+                        setState(() {
+                          _loading = true;
+                        });
+                        _validateInputs();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -203,60 +245,9 @@ class _AdvisorLoginState extends State<AdvisorLogin> {
                     SizedBox(
                       height: 40,
                     ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Divider(
-                            color: Color(0xff616161),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "OR",
-                            style: TextStyle(
-                              color: Color(0xff373D3F),
-                              fontSize: width * 0.04,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            color: Color(0xff616161),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      child: FlatButton(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.black),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        onPressed: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset('assets/images/google.jpg',
-                                height: 50, width: 40),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Login with Google',
-                              style: TextStyle(
-                                color: Color(0xff373D3F),
-                                fontSize: width * 0.04,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    new Align(
+                      child: loadingIndicator,
+                      alignment: FractionalOffset.center,
                     ),
                   ],
                 ),

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:advisorapplication/AdvisorHomePage.dart';
+import 'package:advisorapplication/NewAdvisorHomePage.dart';
 import 'package:advisorapplication/UserInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +18,12 @@ class SearchUserPage extends StatefulWidget {
   final String currentAdvisorID;
   SearchUserPage({Key key, @required this.currentAdvisorID}) : super(key: key);
   @override
-  _SearchUserPage createState() => _SearchUserPage(currentAdvisorID: currentAdvisorID);
+  _SearchUserPage createState() =>
+      _SearchUserPage(currentAdvisorID: currentAdvisorID);
 }
 // //
 
 class _SearchUserPage extends State<SearchUserPage> {
-
   String currentAdvisorID;
   _SearchUserPage({@required this.currentAdvisorID});
 
@@ -31,10 +31,9 @@ class _SearchUserPage extends State<SearchUserPage> {
   Future userSearchData() async {
     var url = 'http://sanjayagarwal.in/Finance App/SearchUser.php';
     print(currentAdvisorID);
-    final response = await http.post(url,
-    body: jsonEncode(<String, String>{
-        "id":currentAdvisorID
-    }),
+    final response = await http.post(
+      url,
+      body: jsonEncode(<String, String>{"id": currentAdvisorID}),
     );
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
@@ -64,9 +63,9 @@ class _SearchUserPage extends State<SearchUserPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AdvisorHomePage(
-                      currentAdvisorID: currentAdvisorID,
-                    )));
+                    builder: (context) => AdvisorHomePage1(
+                          currentAdvisorID: currentAdvisorID,
+                        )));
           },
           icon: Icon(Icons.arrow_back_ios),
           color: Color(0xff373D3F),
@@ -81,7 +80,9 @@ class _SearchUserPage extends State<SearchUserPage> {
           IconButton(
             onPressed: () {
               showSearch(
-                  context: context, delegate: UserSearch(list: searchList,currentAdvisorID: currentAdvisorID));
+                  context: context,
+                  delegate: UserSearch(
+                      list: searchList, currentAdvisorID: currentAdvisorID));
             },
             icon: Icon(Icons.search),
             color: Color(0xff373D3F),
@@ -101,10 +102,7 @@ class UserSearch extends SearchDelegate<String> {
     var url = 'http://sanjayagarwal.in/Finance App/userData.php';
     final response = await http.post(
       url,
-      body: jsonEncode(<String, String>{
-        "Name": query,
-        "id":currentAdvisorID
-      }),
+      body: jsonEncode(<String, String>{"Name": query, "id": currentAdvisorID}),
     );
 
     if (response.statusCode == 200) {
@@ -161,6 +159,7 @@ class UserSearch extends SearchDelegate<String> {
                       MaterialPageRoute(
                           builder: (BuildContext context) => UserInfo(
                                 currentUserID: list['UserID'],
+                                currentAdvisorID: currentAdvisorID,
                               )));
                 });
 
